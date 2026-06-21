@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源解析成功</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 16px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 0;
+            color: #111827;
+            line-height: 1.4;
+        }
+        .desc {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            word-break: break-all;
+        }
+        .section-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 12px;
+            border-left: 4px solid #2563eb;
+            padding-left: 8px;
+        }
+        .item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .btn-copy {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-copy:active {
+            transform: scale(0.95);
+        }
+        .url-preview {
+            font-size: 11px;
+            color: #3b82f6;
+            word-break: break-all;
+            text-decoration: none;
+        }
+        .img-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #f3f4f6;
+            border: 1px solid #f3f4f6;
+        }
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📌 {{TITLE}}</h1>
+    <div class="desc">{{DESC}}</div>
+    
+    <div class="section-title">📦 解析出的资源列表</div>
+    
+    <div id="items-wrapper">
+        {{ITEMS}}
+    </div>
+
+    <div class="footer">
+        此页面链接两小时内有效，请及时保存
+    </div>
+</div>
+
+<script>
+    // 兼容微信内部浏览器的一键复制逻辑
+    function copyText(text, btnElement) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccess(btnElement);
+            }).catch(err => {
+                fallbackCopy(text, btnElement);
+            });
+        } else {
+            fallbackCopy(text, btnElement);
+        }
+    }
+
+    // 备用复制方法（在 HTTP 环境或部分微信版本中起效）
+    function fallbackCopy(text, btnElement) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; // 避免页面滚动
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showSuccess(btnElement);
+        } catch (err) {
+            alert('复制失败，请尝试长按链接手动复制');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function showSuccess(btn) {
+        const originalText = btn.innerText;
+        btn.innerText = '已复制！';
+        btn.style.backgroundColor = '#10b981'; // 变成绿色
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = '#2563eb';
+        }, 1500);
+    }
+</script>
+</body>
+</html>
