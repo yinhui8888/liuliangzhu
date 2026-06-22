@@ -1,0 +1,32 @@
+# 依赖文件夹（最重要！）
+node_modules/
+
+# 环境变量文件（包含数据库密码、密钥等，绝对不能上传）
+.env
+.env.local
+.env.*.local
+
+# 日志文件
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 操作系统临时文件（Mac/Windows）
+.DS_Store
+Thumbs.db
+
+# 编辑器配置（根据你的习惯）
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 宝塔或Nginx临时文件（可选）
+.htaccess
+.well-known/
+
+# 上传的静态资源（如果图片等不想进仓库）
+uploads/
+temp/
